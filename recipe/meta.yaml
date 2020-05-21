@@ -1,5 +1,5 @@
 {% set name = "fast-cdr" %}
-{% set version = "1.0.12" %}
+{% set version = "1.0.13" %}
 {% set major_minor_version = version.split('.')[0] + '.' + version.split('.')[1] %}
 
 package:
@@ -8,7 +8,7 @@ package:
 
 source:
   - url: https://github.com/eProsima/Fast-CDR/archive/v{{ version }}.tar.gz
-    sha256: c8a856b93b57129b024649ba4d12ad732b720829e6285b4db2b0df51a7d78747
+    sha256: e4a2e545703fbc33174daa352d2f0f2973cd00c06c17b87f67c4f139f36dc9dd
 
 build:
   number: 0
