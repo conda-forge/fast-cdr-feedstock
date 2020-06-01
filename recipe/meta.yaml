@@ -12,7 +12,7 @@ source:
 
 build:
   number: 0
-  skip: true  # [win and vc<14 or unix]
+  skip: true  # [win and vc<14]
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
 
@@ -27,6 +27,9 @@ requirements:
 test:
   commands:
     - if not exist %LIBRARY_PREFIX%\\bin\\fastcdr-{{ major_minor_version }}.dll exit 1  # [win]
+    - test -f $PREFIX/lib/libfastcdr${SHLIB_EXT}  # [unix]
+    - test -f $PREFIX/lib/libfastcdr${SHLIB_EXT}.{{ version }}  # [unix]
+    - test -f $PREFIX/include/fastcdr/Cdr.h  # [unix]
 
 about:
   home: https://github.com/eProsima/Fast-CDR
