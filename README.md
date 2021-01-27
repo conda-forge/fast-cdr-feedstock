@@ -10,6 +10,11 @@ Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/fast-cdr-feedst
 Summary: eProsima FastCDR
 
 
+eProsima FastCDR library provides two serialization mechanisms. One is the
+standard CDR serialization mechanism, while the other is a faster
+implementation of it.
+
+
 Current build status
 ====================
 
@@ -148,6 +153,8 @@ In order to produce a uniquely identifiable distribution:
 Feedstock Maintainers
 =====================
 
+* [@EduPonz](https://github.com/EduPonz/)
+* [@MiguelCompany](https://github.com/MiguelCompany/)
 * [@seanyen](https://github.com/seanyen/)
 * [@wolfv](https://github.com/wolfv/)
 
