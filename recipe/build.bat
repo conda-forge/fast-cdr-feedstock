@@ -1,4 +1,5 @@
 @echo on
+set CMAKE_GENERATOR=Ninja
 cmake -S . -B build -G Ninja %CMAKE_ARGS% ^
     -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
     -DCMAKE_BUILD_TYPE=Release ^
@@ -8,7 +9,8 @@ cmake -S . -B build -G Ninja %CMAKE_ARGS% ^
 if errorlevel 1 exit /b 1
 cmake --build build --parallel %CPU_COUNT%
 if errorlevel 1 exit /b 1
-ctest --test-dir build --output-on-failure
-if errorlevel 1 exit /b 1
+:: Install the DLL into the environment's PATH before running tests.
 cmake --install build
+if errorlevel 1 exit /b 1
+ctest --test-dir build --output-on-failure
 if errorlevel 1 exit /b 1

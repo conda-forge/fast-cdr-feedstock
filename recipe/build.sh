@@ -1,5 +1,6 @@
 #!/bin/bash
 set -euxo pipefail
+export CMAKE_GENERATOR=Ninja
 
 cmake -S . -B build -G Ninja ${CMAKE_ARGS} \
     -DCMAKE_INSTALL_PREFIX="$PREFIX" \
