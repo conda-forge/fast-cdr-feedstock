@@ -25,6 +25,9 @@ requirements:
     - pkg-config
   host:
     - gtest
+  ignore_run_exports:
+    by_name:
+      - gtest
   run_exports:
     - ${{ pin_subpackage('fast-cdr', upper_bound='x.x') }}
 
