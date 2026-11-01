@@ -1,0 +1,8 @@
+--- a/test/cmake/build.cmake
++++ b/test/cmake/build.cmake
+@@ -48,3 +48,4 @@
+-if(fail_to_build OR (error_log MATCHES "[Ww][Aa][Rr][Nn][Ii][Nn][Gg]"))
++# Ninja forwards compiler diagnostics to stdout rather than stderr.
++if(fail_to_build OR ("${my_output}\n${error_log}" MATCHES "[Ww][Aa][Rr][Nn][Ii][Nn][Gg]"))
+     message(FATAL_ERROR "The dummy test fail to build!!!")
+     cmake_print_variables(my_output error_log)

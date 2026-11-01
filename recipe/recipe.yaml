@@ -11,6 +11,8 @@ package:
 source:
   url: https://github.com/eProsima/Fast-CDR/archive/v${{ version }}.tar.gz
   sha256: 79d8466107dd6b7d1defe961c4aa31735038937cf9dd1175cf6b0da0df2209ab
+  patches:
+    - 0001-check-compiler-warnings-with-ninja.patch
 
 build:
   number: 0
