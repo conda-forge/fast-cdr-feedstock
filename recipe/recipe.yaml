@@ -1,7 +1,7 @@
 schema_version: 1
 
 context:
-  version: "1.1.1"
+  version: "2.4.0"
   major_minor_version: ${{ (version | split('.'))[:2] | join('.') }}
 
 package:
@@ -10,7 +10,7 @@ package:
 
 source:
   url: https://github.com/eProsima/Fast-CDR/archive/v${{ version }}.tar.gz
-  sha256: 5b5c1fc138a0d3092010158be0306c587da56bf406b0bfd45c20835e53839caf
+  sha256: 79d8466107dd6b7d1defe961c4aa31735038937cf9dd1175cf6b0da0df2209ab
 
 build:
   number: 0
@@ -19,9 +19,12 @@ requirements:
   build:
     - ${{ compiler('cxx') }}
     - ${{ compiler('c') }}
-    - cmake
+    - ${{ stdlib('c') }}
+    - cmake >=3.22
     - ninja
     - pkg-config
+  host:
+    - gtest
   run_exports:
     - ${{ pin_subpackage('fast-cdr', upper_bound='x.x') }}
 
@@ -33,9 +36,25 @@ tests:
           else: fastcdr
       include:
         - fastcdr/Cdr.h
+        - fastcdr/FastBuffer.h
       files:
         - if: linux
           then: lib/libfastcdr.so.${{ version }}
+
+  - requirements:
+      run:
+        - ${{ compiler('cxx') }}
+        - cmake >=3.22
+        - ninja
+    files:
+      recipe:
+        - cmake_test/
+    script:
+      - if: unix
+        then: cmake -S cmake_test -B consumer -G Ninja $CMAKE_ARGS
+        else: cmake -S cmake_test -B consumer -G Ninja %CMAKE_ARGS%
+      - cmake --build consumer
+      - ctest --test-dir consumer --output-on-failure
 
 about:
   homepage: https://github.com/eProsima/Fast-CDR
