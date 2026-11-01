@@ -1,0 +1,54 @@
+schema_version: 1
+
+context:
+  version: "1.1.1"
+  major_minor_version: ${{ (version | split('.'))[:2] | join('.') }}
+
+package:
+  name: fast-cdr
+  version: ${{ version }}
+
+source:
+  url: https://github.com/eProsima/Fast-CDR/archive/v${{ version }}.tar.gz
+  sha256: 5b5c1fc138a0d3092010158be0306c587da56bf406b0bfd45c20835e53839caf
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - ${{ compiler('cxx') }}
+    - ${{ compiler('c') }}
+    - cmake
+    - ninja
+    - pkg-config
+  run_exports:
+    - ${{ pin_subpackage('fast-cdr', upper_bound='x.x') }}
+
+tests:
+  - package_contents:
+      lib:
+        - if: win
+          then: fastcdr-${{ major_minor_version }}
+          else: fastcdr
+      include:
+        - fastcdr/Cdr.h
+      files:
+        - if: linux
+          then: lib/libfastcdr.so.${{ version }}
+
+about:
+  homepage: https://github.com/eProsima/Fast-CDR
+  license: Apache-2.0
+  license_file: LICENSE
+  summary: eProsima Fast CDR
+  description: |
+    eProsima Fast CDR provides standard CDR serialization and a faster
+    implementation of the same mechanism.
+
+extra:
+  recipe-maintainers:
+    - seanyen
+    - wolfv
+    - MiguelCompany
+    - EduPonz
