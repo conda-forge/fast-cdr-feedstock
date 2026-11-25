@@ -1,0 +1,78 @@
+schema_version: 1
+
+context:
+  version: "2.4.0"
+  major_minor_version: ${{ (version | split('.'))[:2] | join('.') }}
+
+package:
+  name: fast-cdr
+  version: ${{ version }}
+
+source:
+  url: https://github.com/eProsima/Fast-CDR/archive/v${{ version }}.tar.gz
+  sha256: 79d8466107dd6b7d1defe961c4aa31735038937cf9dd1175cf6b0da0df2209ab
+  patches:
+    - 0001-check-compiler-warnings-with-ninja.patch
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - ${{ compiler('cxx') }}
+    - ${{ compiler('c') }}
+    - ${{ stdlib('c') }}
+    - cmake >=3.22
+    - ninja
+    - pkg-config
+  host:
+    - gtest
+  ignore_run_exports:
+    by_name:
+      - gtest
+  run_exports:
+    - ${{ pin_subpackage('fast-cdr', upper_bound='x.x') }}
+
+tests:
+  - package_contents:
+      lib:
+        - if: win
+          then: fastcdr-${{ major_minor_version }}
+          else: fastcdr
+      include:
+        - fastcdr/Cdr.h
+        - fastcdr/FastBuffer.h
+      files:
+        - if: linux
+          then: lib/libfastcdr.so.${{ version }}
+
+  - requirements:
+      run:
+        - ${{ compiler('cxx') }}
+        - cmake >=3.22
+        - ninja
+    files:
+      recipe:
+        - cmake_test/
+    script:
+      - if: unix
+        then: cmake -S cmake_test -B consumer -G Ninja $CMAKE_ARGS
+        else: cmake -S cmake_test -B consumer -G Ninja %CMAKE_ARGS%
+      - cmake --build consumer
+      - ctest --test-dir consumer --output-on-failure
+
+about:
+  homepage: https://github.com/eProsima/Fast-CDR
+  license: Apache-2.0
+  license_file: LICENSE
+  summary: eProsima Fast CDR
+  description: |
+    eProsima Fast CDR provides standard CDR serialization and a faster
+    implementation of the same mechanism.
+
+extra:
+  recipe-maintainers:
+    - seanyen
+    - wolfv
+    - MiguelCompany
+    - EduPonz
